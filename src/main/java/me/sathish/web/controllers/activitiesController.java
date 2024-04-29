@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.sathish.exception.activitiesNotFoundException;
 import me.sathish.model.query.FindactivitiessQuery;
-import me.sathish.model.request.activitiesRequest;
+import me.sathish.model.request.ActivitiesRequest;
 import me.sathish.model.response.PagedResult;
-import me.sathish.model.response.activitiesResponse;
-import me.sathish.services.activitiesService;
+import me.sathish.model.response.ActivitiesResponse;
+import me.sathish.services.ActivitiesService;
 import me.sathish.utils.AppConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,10 +30,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequiredArgsConstructor
 public class activitiesController {
 
-    private final activitiesService activitiesService;
+    private final ActivitiesService activitiesService;
 
     @GetMapping
-    public PagedResult<activitiesResponse> getAllactivitiess(
+    public PagedResult<ActivitiesResponse> getAllactivitiess(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false)
                     int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false)
@@ -47,7 +47,7 @@ public class activitiesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<activitiesResponse> getactivitiesById(@PathVariable Long id) {
+    public ResponseEntity<ActivitiesResponse> getactivitiesById(@PathVariable Long id) {
         return activitiesService
                 .findactivitiesById(id)
                 .map(ResponseEntity::ok)
@@ -55,24 +55,24 @@ public class activitiesController {
     }
 
     @PostMapping
-    public ResponseEntity<activitiesResponse> createactivities(
-            @RequestBody @Validated activitiesRequest activitiesRequest) {
-        activitiesResponse response = activitiesService.saveactivities(activitiesRequest);
+    public ResponseEntity<ActivitiesResponse> createactivities(
+            @RequestBody @Validated ActivitiesRequest activitiesRequest) {
+        ActivitiesResponse response = activitiesService.saveactivities(activitiesRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/api/activities/{id}")
+                .path("/api/Activities/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
         return ResponseEntity.created(location).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<activitiesResponse> updateactivities(
-            @PathVariable Long id, @RequestBody @Valid activitiesRequest activitiesRequest) {
+    public ResponseEntity<ActivitiesResponse> updateactivities(
+            @PathVariable Long id, @RequestBody @Valid ActivitiesRequest activitiesRequest) {
         return ResponseEntity.ok(activitiesService.updateactivities(id, activitiesRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<activitiesResponse> deleteactivities(@PathVariable Long id) {
+    public ResponseEntity<ActivitiesResponse> deleteactivities(@PathVariable Long id) {
         return activitiesService
                 .findactivitiesById(id)
                 .map(activities -> {

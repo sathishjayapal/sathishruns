@@ -3,19 +3,14 @@ package me.sathish.web.controllers;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import me.sathish.common.AbstractIntegrationTest;
-import me.sathish.entities.activities;
-import me.sathish.model.request.activitiesRequest;
+import me.sathish.entities.Activities;
+import me.sathish.model.request.ActivitiesRequest;
 import me.sathish.repositories.activitiesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,21 +18,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-class activitiesControllerIT extends AbstractIntegrationTest {
+class ActivitiesControllerIT extends AbstractIntegrationTest {
 
     @Autowired
     private activitiesRepository activitiesRepository;
 
-    private List<activities> activitiesList = null;
+    private List<Activities> activitiesList = null;
 
     @BeforeEach
     void setUp() {
         activitiesRepository.deleteAllInBatch();
 
         activitiesList = new ArrayList<>();
-        activitiesList.add(new activities(null, "First activities"));
-        activitiesList.add(new activities(null, "Second activities"));
-        activitiesList.add(new activities(null, "Third activities"));
+        activitiesList.add(new Activities(
+                null, "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1"));
+        activitiesList.add(new Activities(
+                null, "11146373918", "2021-06-02", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest2"));
+        activitiesList.add(new Activities(
+                null, "11146373919", "2021-06-03", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest3"));
         activitiesList = activitiesRepository.saveAll(activitiesList);
     }
 
@@ -58,19 +56,20 @@ class activitiesControllerIT extends AbstractIntegrationTest {
 
     @Test
     void shouldFindactivitiesById() throws Exception {
-        activities activities = activitiesList.get(0);
+        Activities activities = activitiesList.get(0);
         Long activitiesId = activities.getId();
 
         this.mockMvc
                 .perform(get("/api/activities/{id}", activitiesId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(activities.getId()), Long.class))
-                .andExpect(jsonPath("$.text", is(activities.getText())));
+                .andExpect(jsonPath("$.activityName", is(activities.getActivityName())));
     }
 
     @Test
     void shouldCreateNewactivities() throws Exception {
-        activitiesRequest activitiesRequest = new activitiesRequest("New activities");
+        ActivitiesRequest activitiesRequest = new ActivitiesRequest(
+                "11146373915", "2021-06-04", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest5");
         this.mockMvc
                 .perform(post("/api/activities")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -78,13 +77,13 @@ class activitiesControllerIT extends AbstractIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.text", is(activitiesRequest.text())));
+                .andExpect(jsonPath("$.activityName", is(activitiesRequest.activityName())));
     }
 
     @Test
     void shouldReturn400WhenCreateNewactivitiesWithoutText() throws Exception {
-        activitiesRequest activitiesRequest = new activitiesRequest(null);
-
+        ActivitiesRequest activitiesRequest = new ActivitiesRequest(
+                null, "2021-06-04", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest5");
         this.mockMvc
                 .perform(post("/api/activities")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,33 +96,33 @@ class activitiesControllerIT extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.detail", is("Invalid request content.")))
                 .andExpect(jsonPath("$.instance", is("/api/activities")))
                 .andExpect(jsonPath("$.violations", hasSize(1)))
-                .andExpect(jsonPath("$.violations[0].field", is("text")))
-                .andExpect(jsonPath("$.violations[0].message", is("Text cannot be empty")))
+                .andExpect(jsonPath("$.violations[0].field", is("activityID")))
+                .andExpect(jsonPath("$.violations[0].message", is("ActivityID cannot be empty")))
                 .andReturn();
     }
 
     @Test
     void shouldUpdateactivities() throws Exception {
         Long activitiesId = activitiesList.get(0).getId();
-        activitiesRequest activitiesRequest = new activitiesRequest("Updated activities");
-
+        ActivitiesRequest activitiesRequest = new ActivitiesRequest(
+                "11146355740", "2021-06-01", "Running", "Updated Running", "1:00:00", "10", "100", "200", "junitTest1");
         this.mockMvc
                 .perform(put("/api/activities/{id}", activitiesId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activitiesRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(activitiesId), Long.class))
-                .andExpect(jsonPath("$.text", is(activitiesRequest.text())));
+                .andExpect(jsonPath("$.activityName", is(activitiesRequest.activityName())));
     }
 
     @Test
     void shouldDeleteactivities() throws Exception {
-        activities activities = activitiesList.get(0);
+        Activities activities = activitiesList.get(0);
 
         this.mockMvc
                 .perform(delete("/api/activities/{id}", activities.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(activities.getId()), Long.class))
-                .andExpect(jsonPath("$.text", is(activities.getText())));
+                .andExpect(jsonPath("$.activityName", is(activities.getActivityName())));
     }
 }

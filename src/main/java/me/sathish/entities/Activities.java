@@ -1,11 +1,6 @@
 package me.sathish.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,25 +9,47 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "activitiess")
+@Table(name = "activities")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class activities {
+public class Activities {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(nullable = false)
-    private String text;
+    private String activityID;
+
+    @Column(nullable = false)
+    private String activityDate;
+
+    @Column(nullable = false)
+    private String activityType;
+
+    private String activityDescription;
+
+    @Column(nullable = false)
+    private String elapsedTime;
+
+    @Column(nullable = false)
+    private String distance;
+
+    @Column(nullable = false)
+    private String calories;
+
+    private String maxHeartRate;
+
+    @Column(nullable = false)
+    private String activityName;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        activities activities = (activities) o;
+        Activities activities = (Activities) o;
         return id != null && Objects.equals(id, activities.id);
     }
 

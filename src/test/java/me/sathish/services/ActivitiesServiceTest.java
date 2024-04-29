@@ -8,9 +8,9 @@ import static org.mockito.BDDMockito.verify;
 import static org.mockito.BDDMockito.willDoNothing;
 
 import java.util.Optional;
-import me.sathish.entities.activities;
+import me.sathish.entities.Activities;
 import me.sathish.mapper.activitiesMapper;
-import me.sathish.model.response.activitiesResponse;
+import me.sathish.model.response.ActivitiesResponse;
 import me.sathish.repositories.activitiesRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class activitiesServiceTest {
+class ActivitiesServiceTest {
 
     @Mock
     private activitiesRepository activitiesRepository;
@@ -28,20 +28,20 @@ class activitiesServiceTest {
     private activitiesMapper activitiesMapper;
 
     @InjectMocks
-    private activitiesService activitiesService;
+    private ActivitiesService activitiesService;
 
     @Test
     void findactivitiesById() {
         // given
         given(activitiesRepository.findById(1L)).willReturn(Optional.of(getactivities()));
-        given(activitiesMapper.toResponse(any(activities.class))).willReturn(getactivitiesResponse());
+        given(activitiesMapper.toResponse(any(Activities.class))).willReturn(getactivitiesResponse());
         // when
-        Optional<activitiesResponse> optionalactivities = activitiesService.findactivitiesById(1L);
+        Optional<ActivitiesResponse> optionalactivities = activitiesService.findactivitiesById(1L);
         // then
         assertThat(optionalactivities).isPresent();
-        activitiesResponse activities = optionalactivities.get();
+        ActivitiesResponse activities = optionalactivities.get();
         assertThat(activities.id()).isEqualTo(1L);
-        assertThat(activities.text()).isEqualTo("junitTest");
+        assertThat(activities.activityID()).isEqualTo("junitTest");
     }
 
     @Test
@@ -54,14 +54,23 @@ class activitiesServiceTest {
         verify(activitiesRepository, times(1)).deleteById(1L);
     }
 
-    private activities getactivities() {
-        activities activities = new activities();
+    private Activities getactivities() {
+        Activities activities = new Activities();
         activities.setId(1L);
-        activities.setText("junitTest");
+        activities.setActivityID("11146355759");
+        activities.setActivityDate("2021-06-01");
+        activities.setActivityType("Running");
+        activities.setActivityDescription("Running");
+        activities.setElapsedTime("00:00:00");
+        activities.setDistance("0.0");
+        activities.setCalories("0");
+        activities.setMaxHeartRate("0");
+        activities.setActivityName("junitTest");
         return activities;
     }
 
-    private activitiesResponse getactivitiesResponse() {
-        return new activitiesResponse(1L, "junitTest");
+    private ActivitiesResponse getactivitiesResponse() {
+        return new ActivitiesResponse(
+                1L, "11146355759", "2021-06-01", "Running", "Running", "00:00:00", "0.0", "0", "0", "junitTest");
     }
 }

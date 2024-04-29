@@ -1,7 +1,15 @@
-create sequence activitiess_seq start with 1 increment by 50;
+create sequence activities_seq start with 1 increment by 50;
 
-create table activitiess (
-    id bigint DEFAULT nextval('activitiess_seq') not null,
-    text text not null,
+create table activities (
+    id bigint DEFAULT nextval('activities_seq') not null,
+    activityID text not null,
+    activity_date text not null,
+    activity_type text not null,
+    activity_name text not null,
+    activity_description text not null,
+    elapsed_time text,
+    distance text not null,
+    max_heart_rate text,
+    calories text not null,
     primary key (id)
 );

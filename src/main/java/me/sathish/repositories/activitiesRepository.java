@@ -1,6 +1,6 @@
 package me.sathish.repositories;
 
-import me.sathish.entities.activities;
+import me.sathish.entities.Activities;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface activitiesRepository extends JpaRepository<activities, Long> {}
+public interface activitiesRepository extends JpaRepository<Activities, Long> {}
