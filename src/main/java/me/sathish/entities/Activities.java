@@ -37,7 +37,6 @@ public class Activities {
     @Column(nullable = false)
     private String distance;
 
-    @Column(nullable = false)
     private String calories;
 
     private String maxHeartRate;

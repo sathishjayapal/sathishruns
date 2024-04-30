@@ -4,3 +4,6 @@ spring:
         password: secret
         url: jdbc:postgresql://localhost:5432/appdb
         username: skminfotech
+    jpa:
+        hibernate:
+            ddl-auto: create

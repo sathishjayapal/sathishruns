@@ -5,12 +5,12 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import me.sathish.entities.Activities;
 import me.sathish.exception.activitiesNotFoundException;
-import me.sathish.mapper.activitiesMapper;
+import me.sathish.mapper.ActivitiesMapper;
 import me.sathish.model.query.FindactivitiessQuery;
 import me.sathish.model.request.ActivitiesRequest;
-import me.sathish.model.response.PagedResult;
 import me.sathish.model.response.ActivitiesResponse;
-import me.sathish.repositories.activitiesRepository;
+import me.sathish.model.response.PagedResult;
+import me.sathish.repositories.ActivitiesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ActivitiesService {
 
-    private final activitiesRepository activitiesRepository;
-    private final activitiesMapper activitiesMapper;
+    private final ActivitiesRepository activitiesRepository;
+    private final ActivitiesMapper activitiesMapper;
 
     public PagedResult<ActivitiesResponse> findAllactivitiess(FindactivitiessQuery findactivitiessQuery) {
 

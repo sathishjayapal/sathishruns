@@ -1,12 +1,26 @@
 package me.sathish.web.controllers;
 
+import static me.sathish.utils.AppConstants.PROFILE_TEST;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import me.sathish.entities.Activities;
 import me.sathish.exception.activitiesNotFoundException;
 import me.sathish.model.query.FindactivitiessQuery;
 import me.sathish.model.request.ActivitiesRequest;
-import me.sathish.model.response.PagedResult;
 import me.sathish.model.response.ActivitiesResponse;
+import me.sathish.model.response.PagedResult;
 import me.sathish.services.ActivitiesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,21 +33,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static me.sathish.utils.AppConstants.PROFILE_TEST;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = activitiesController.class)
 @ActiveProfiles(PROFILE_TEST)
@@ -85,7 +84,17 @@ class ActivitiesControllerTest {
     @Test
     void shouldFindactivitiesById() throws Exception {
         Long activitiesId = 1L;
-        ActivitiesResponse activities = new ActivitiesResponse(activitiesId, "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1");
+        ActivitiesResponse activities = new ActivitiesResponse(
+                activitiesId,
+                "11146355759",
+                "2021-06-01",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest1");
         given(activitiesService.findactivitiesById(activitiesId)).willReturn(Optional.of(activities));
         this.mockMvc
                 .perform(get("/api/activities/{id}", activitiesId))
@@ -109,8 +118,10 @@ class ActivitiesControllerTest {
 
     @Test
     void shouldCreateNewactivities() throws Exception {
-        ActivitiesResponse activities = new ActivitiesResponse(1L, "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1");
-        ActivitiesRequest activitiesRequest = new ActivitiesRequest("11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1");
+        ActivitiesResponse activities = new ActivitiesResponse(
+                1L, "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1");
+        ActivitiesRequest activitiesRequest = new ActivitiesRequest(
+                "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1");
         given(activitiesService.saveactivities(any(ActivitiesRequest.class))).willReturn(activities);
 
         this.mockMvc
@@ -125,7 +136,8 @@ class ActivitiesControllerTest {
 
     @Test
     void shouldReturn400WhenCreateNewactivitiesWithoutText() throws Exception {
-        ActivitiesRequest activitiesRequest = new ActivitiesRequest(null,null,null,null,null,null,null,null,null);
+        ActivitiesRequest activitiesRequest =
+                new ActivitiesRequest(null, null, null, null, null, null, null, null, null);
         this.mockMvc
                 .perform(post("/api/activities")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -146,8 +158,19 @@ class ActivitiesControllerTest {
     @Test
     void shouldUpdateactivities() throws Exception {
         Long activitiesId = 1L;
-        ActivitiesResponse activities = new ActivitiesResponse(activitiesId, "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1");
-        ActivitiesRequest activitiesRequest = new ActivitiesRequest("11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest14");
+        ActivitiesResponse activities = new ActivitiesResponse(
+                activitiesId,
+                "11146355759",
+                "2021-06-01",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest1");
+        ActivitiesRequest activitiesRequest = new ActivitiesRequest(
+                "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest14");
         given(activitiesService.updateactivities(eq(activitiesId), any(ActivitiesRequest.class)))
                 .willReturn(activities);
         this.mockMvc
@@ -162,7 +185,8 @@ class ActivitiesControllerTest {
     @Test
     void shouldReturn404WhenUpdatingNonExistingactivities() throws Exception {
         Long activitiesId = 1L;
-        ActivitiesRequest activitiesRequest = new ActivitiesRequest("11146355759", null, null, null, null, null, null, null, null);
+        ActivitiesRequest activitiesRequest =
+                new ActivitiesRequest("11146355759", null, null, null, null, null, null, null, null);
         given(activitiesService.updateactivities(eq(activitiesId), any(ActivitiesRequest.class)))
                 .willThrow(new activitiesNotFoundException(activitiesId));
 
@@ -181,7 +205,17 @@ class ActivitiesControllerTest {
     @Test
     void shouldDeleteactivities() throws Exception {
         Long activitiesId = 1L;
-        ActivitiesResponse activities = new ActivitiesResponse(activitiesId, "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1");
+        ActivitiesResponse activities = new ActivitiesResponse(
+                activitiesId,
+                "11146355759",
+                "2021-06-01",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest1");
         given(activitiesService.findactivitiesById(activitiesId)).willReturn(Optional.of(activities));
         doNothing().when(activitiesService).deleteactivitiesById(activitiesId);
 
@@ -207,8 +241,17 @@ class ActivitiesControllerTest {
 
     List<ActivitiesResponse> getactivitiesResponseList() {
         return activitiesList.stream()
-                .map(activities -> new ActivitiesResponse(activities.getId(), activities.getActivityName(), activities.getActivityDate(),
-                        activities.getActivityType(), activities.getActivityDescription(), activities.getElapsedTime(), activities.getDistance(),
-                        activities.getCalories(), activities.getMaxHeartRate(), activities.getActivityName())).toList();
+                .map(activities -> new ActivitiesResponse(
+                        activities.getId(),
+                        activities.getActivityName(),
+                        activities.getActivityDate(),
+                        activities.getActivityType(),
+                        activities.getActivityDescription(),
+                        activities.getElapsedTime(),
+                        activities.getDistance(),
+                        activities.getCalories(),
+                        activities.getMaxHeartRate(),
+                        activities.getActivityName()))
+                .toList();
     }
 }

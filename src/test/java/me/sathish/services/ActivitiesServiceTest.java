@@ -9,9 +9,9 @@ import static org.mockito.BDDMockito.willDoNothing;
 
 import java.util.Optional;
 import me.sathish.entities.Activities;
-import me.sathish.mapper.activitiesMapper;
+import me.sathish.mapper.ActivitiesMapper;
 import me.sathish.model.response.ActivitiesResponse;
-import me.sathish.repositories.activitiesRepository;
+import me.sathish.repositories.ActivitiesRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,10 +22,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ActivitiesServiceTest {
 
     @Mock
-    private activitiesRepository activitiesRepository;
+    private ActivitiesRepository activitiesRepository;
 
     @Mock
-    private activitiesMapper activitiesMapper;
+    private ActivitiesMapper activitiesMapper;
 
     @InjectMocks
     private ActivitiesService activitiesService;

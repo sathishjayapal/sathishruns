@@ -11,7 +11,7 @@ import java.util.List;
 import me.sathish.common.AbstractIntegrationTest;
 import me.sathish.entities.Activities;
 import me.sathish.model.request.ActivitiesRequest;
-import me.sathish.repositories.activitiesRepository;
+import me.sathish.repositories.ActivitiesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.http.MediaType;
 class ActivitiesControllerIT extends AbstractIntegrationTest {
 
     @Autowired
-    private activitiesRepository activitiesRepository;
+    private ActivitiesRepository activitiesRepository;
 
     private List<Activities> activitiesList = null;
 
