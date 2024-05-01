@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.times;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.BDDMockito.willDoNothing;
 
+import java.math.BigInteger;
 import java.util.Optional;
 import me.sathish.entities.Activities;
 import me.sathish.mapper.ActivitiesMapper;
@@ -41,7 +42,7 @@ class ActivitiesServiceTest {
         assertThat(optionalactivities).isPresent();
         ActivitiesResponse activities = optionalactivities.get();
         assertThat(activities.id()).isEqualTo(1L);
-        assertThat(activities.activityID()).isEqualTo("junitTest");
+        assertThat(activities.activityID()).isEqualTo("11146355759");
     }
 
     @Test
@@ -57,7 +58,7 @@ class ActivitiesServiceTest {
     private Activities getactivities() {
         Activities activities = new Activities();
         activities.setId(1L);
-        activities.setActivityID("11146355759");
+        activities.setActivityID( new BigInteger("11146355759"));
         activities.setActivityDate("2021-06-01");
         activities.setActivityType("Running");
         activities.setActivityDescription("Running");

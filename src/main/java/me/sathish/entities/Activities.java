@@ -1,6 +1,8 @@
 package me.sathish.entities;
 
 import jakarta.persistence.*;
+
+import java.math.BigInteger;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,8 +22,8 @@ public class Activities {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false)
-    private String activityID;
+    @Column(nullable = false, unique = true)
+    private BigInteger activityID;
 
     @Column(nullable = false)
     private String activityDate;

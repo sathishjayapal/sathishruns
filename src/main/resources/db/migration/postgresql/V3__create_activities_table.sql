@@ -1,6 +1,6 @@
 Drop table if exists activitiess;
-Drop sequence if exists activities_seq;
 Drop table if exists activities;
+Drop sequence if exists activities_seq;
 create sequence activities_seq start with 1 increment by 50;
 
 create table activities (

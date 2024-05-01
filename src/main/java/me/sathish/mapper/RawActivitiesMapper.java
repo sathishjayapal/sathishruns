@@ -5,6 +5,8 @@ import me.sathish.entities.RawActivities;
 import me.sathish.model.request.ActivitiesRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+
 @Service
 public class RawActivitiesMapper {
     public void mapRawActivitiesWithRequest(RawActivities rawActivities, ActivitiesRequest activitiesRequest) {
@@ -21,7 +23,7 @@ public class RawActivitiesMapper {
 
     public Activities toEntity(RawActivities rawActivities) {
         Activities activities = new Activities();
-        activities.setActivityID(rawActivities.getActivityID());
+        activities.setActivityID(new BigInteger(rawActivities.getActivityID()));
         activities.setActivityDate(rawActivities.getActivityDate());
         activities.setActivityType(rawActivities.getActivityType());
         activities.setActivityDescription(rawActivities.getActivityDescription());

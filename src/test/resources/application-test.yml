@@ -6,4 +6,4 @@ spring:
         username: skminfotech
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: create-drop

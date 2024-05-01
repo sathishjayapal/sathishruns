@@ -12,6 +12,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,11 +55,11 @@ class ActivitiesControllerTest {
     void setUp() {
         this.activitiesList = new ArrayList<>();
         activitiesList.add(new Activities(
-                1L, "11146355759", "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1"));
+                1L, new BigInteger("11146355759"), "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1"));
         activitiesList.add(new Activities(
-                2L, "11146373918", "2021-06-02", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest2"));
+                2L, new BigInteger("11146373918"), "2021-06-02", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest2"));
         activitiesList.add(new Activities(
-                3L, "11146373919", "2021-06-03", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest3"));
+                3L, new BigInteger("11146373919"), "2021-06-03", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest3"));
     }
 
     @Test
@@ -99,7 +101,7 @@ class ActivitiesControllerTest {
         this.mockMvc
                 .perform(get("/api/activities/{id}", activitiesId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text", is(activities.activityDescription())));
+                .andExpect(jsonPath("$.activityDescription", is(activities.activityDescription())));
     }
 
     @Test
@@ -131,13 +133,14 @@ class ActivitiesControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.text", is(activities.activityDescription())));
+                .andExpect(jsonPath("$.activityDescription", is(activities.activityDescription())));
     }
 
     @Test
     void shouldReturn400WhenCreateNewactivitiesWithoutText() throws Exception {
         ActivitiesRequest activitiesRequest =
-                new ActivitiesRequest(null, null, null, null, null, null, null, null, null);
+                new ActivitiesRequest(null, "2021-06-01", "Running", "Running",
+                        "0.00", "0.00", "120", "100", "junittest50");
         this.mockMvc
                 .perform(post("/api/activities")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -150,8 +153,8 @@ class ActivitiesControllerTest {
                 .andExpect(jsonPath("$.detail", is("Invalid request content.")))
                 .andExpect(jsonPath("$.instance", is("/api/Activities")))
                 .andExpect(jsonPath("$.violations", hasSize(1)))
-                .andExpect(jsonPath("$.violations[0].field", is("text")))
-                .andExpect(jsonPath("$.violations[0].message", is("Text cannot be empty")))
+                .andExpect(jsonPath("$.violations[0].field", is("activityID")))
+                .andExpect(jsonPath("$.violations[0].message", is("ActivityID cannot be empty")))
                 .andReturn();
     }
 
@@ -179,14 +182,16 @@ class ActivitiesControllerTest {
                         .content(objectMapper.writeValueAsString(activitiesRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(activitiesId), Long.class))
-                .andExpect(jsonPath("$.text", is(activities.activityDescription())));
+                .andExpect(jsonPath("$.activityDescription", is(activities.activityDescription())));
     }
 
     @Test
     void shouldReturn404WhenUpdatingNonExistingactivities() throws Exception {
         Long activitiesId = 1L;
         ActivitiesRequest activitiesRequest =
-                new ActivitiesRequest("11146355759", null, null, null, null, null, null, null, null);
+                new ActivitiesRequest("11146355759", "2021-06-01",
+                        "Running", "Running", "00:00:00",
+                        "0.0", "0.0", "0", "junitTest4");
         given(activitiesService.updateactivities(eq(activitiesId), any(ActivitiesRequest.class)))
                 .willThrow(new activitiesNotFoundException(activitiesId));
 
@@ -222,7 +227,7 @@ class ActivitiesControllerTest {
         this.mockMvc
                 .perform(delete("/api/activities/{id}", activitiesId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text", is(activities.activityName())));
+                .andExpect(jsonPath("$.activityName", is(activities.activityName())));
     }
 
     @Test
