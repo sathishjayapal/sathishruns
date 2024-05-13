@@ -42,8 +42,9 @@ public class ActivityFileParserService {
             List<RawActivities> rawActivitiesList = engine.parseFirstLinesOfInputStream(
                             getCsvFile(), RawActivities.class, 1000)
                     .getObjects();
-            Iterable<Activities> activitiesIterable =
-                    rawActivitiesList.stream().map(rawActivitiesMapper::toEntity).collect(Collectors.toList());
+            Iterable<Activities> activitiesIterable = rawActivitiesList.stream()
+                    .map(rawActivitiesMapper::toEntity)
+                    .collect(Collectors.toList());
             List<Activities> activitiesList = activitiesRepository.saveAll(activitiesIterable);
             System.out.println("**************");
             System.out.println("Saved the activities in the database" + activitiesList.size());

@@ -5,7 +5,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest(
         properties = {
-            "spring.jpa.hibernate.ddl-auto=validate",
+            "spring.jpa.hibernate.ddl-auto=create",
             "spring.test.database.replace=none",
             "spring.datasource.url=jdbc:tc:postgresql:16.0-alpine:///appdb"
         })

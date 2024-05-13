@@ -1,14 +1,5 @@
 package me.sathish.web.controllers;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import me.sathish.common.AbstractIntegrationTest;
 import me.sathish.entities.Activities;
 import me.sathish.model.request.ActivitiesRequest;
@@ -18,6 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class ActivitiesControllerIT extends AbstractIntegrationTest {
 
@@ -32,11 +33,38 @@ class ActivitiesControllerIT extends AbstractIntegrationTest {
 
         activitiesList = new ArrayList<>();
         activitiesList.add(new Activities(
-                null, new BigInteger("11146355759"), "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1"));
+                null,
+                new BigInteger("11146355759"),
+                "2021-06-01",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest1"));
         activitiesList.add(new Activities(
-                null,  new BigInteger("11146373918"), "2021-06-02", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest2"));
+                null,
+                new BigInteger("11146373918"),
+                "2021-06-02",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest2"));
         activitiesList.add(new Activities(
-                null,  new BigInteger("11146373919"), "2021-06-03", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest3"));
+                null,
+                new BigInteger("11146373919"),
+                "2021-06-03",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest3"));
         activitiesList = activitiesRepository.saveAll(activitiesList);
     }
 

@@ -5,20 +5,22 @@
     <springProperty scope="context" name="appName" source="spring.application.name"/>
 
     <springProfile name="default">
-        <root level="INFO">
+        <root level="DEBUG">
             <appender-ref ref="CONSOLE" />
         </root>
     </springProfile>
     <springProfile name="!default">
         <property name="LOG_FILE" value="logs/${appName}.log"/>
         <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
-        <root level="INFO">
+        <root level="DEBUG">
             <appender-ref ref="FILE" />
             <appender-ref ref="CONSOLE" />
         </root>
     </springProfile>
 
     <logger name="me.sathish" level="DEBUG"/>
-    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.hibernate.sql" level="DEBUG"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="TRACE"/>
 
 </configuration>

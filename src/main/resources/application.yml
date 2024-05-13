@@ -1,3 +1,4 @@
+
 management:
     endpoint:
         health:
@@ -21,7 +22,7 @@ spring:
             auto-commit: false
     flyway:
         locations: classpath:/db/migration/{vendor}
-#        validate-on-migrate: false
+        validate-on-migrate: false
     jmx:
         enabled: false
     jpa:
@@ -50,3 +51,15 @@ spring:
     mvc:
         problemdetails:
             enabled: true
+decorator:
+    datasource:
+        datasource-proxy:
+            json-format: true
+            format-sql: true
+
+        flexy-pool:
+            threshold:
+                connection:
+                    acquire: -1
+                    lease: 0
+

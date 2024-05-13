@@ -1,7 +1,5 @@
 package me.sathish.services;
 
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import me.sathish.entities.Activities;
 import me.sathish.exception.activitiesNotFoundException;
@@ -17,6 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,17 +27,18 @@ public class ActivitiesService {
 
     private final ActivitiesRepository activitiesRepository;
     private final ActivitiesMapper activitiesMapper;
+    private final TransactionTemplate transactionTemplate;
 
     public PagedResult<ActivitiesResponse> findAllactivitiess(FindactivitiessQuery findactivitiessQuery) {
-
         // create Pageable instance
         Pageable pageable = createPageable(findactivitiessQuery);
-
-        Page<Activities> activitiessPage = activitiesRepository.findAll(pageable);
-
-        List<ActivitiesResponse> activitiesResponseList = activitiesMapper.toResponseList(activitiessPage.getContent());
-
-        return new PagedResult<>(activitiessPage, activitiesResponseList);
+        return transactionTemplate.execute(status -> {
+            // do something
+            Page<Activities> activitiessPage = activitiesRepository.findAll(pageable);
+            List<ActivitiesResponse> activitiesResponseList =
+                    activitiesMapper.toResponseList(activitiessPage.getContent());
+            return new PagedResult<>(activitiessPage, activitiesResponseList);
+        });
     }
 
     private Pageable createPageable(FindactivitiessQuery findactivitiessQuery) {

@@ -28,3 +28,7 @@ replay_pid*
 target/
 
 .idea/
+/logs/sathishruns.log.2024-05-06.0.gz
+/logs/sathishruns.log.2024-05-07.0.gz
+/logs/sathishruns.log.2024-05-08.0.gz
+/logs/sathishruns.log.2024-05-09.0.gz

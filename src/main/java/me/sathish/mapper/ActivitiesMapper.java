@@ -1,19 +1,20 @@
 package me.sathish.mapper;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 import me.sathish.entities.Activities;
 import me.sathish.model.request.ActivitiesRequest;
 import me.sathish.model.response.ActivitiesResponse;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+
 @Service
 public class ActivitiesMapper {
     public Activities toEntity(ActivitiesRequest activitiesRequest) {
         Activities activities = new Activities();
-        BigInteger activityID= new BigInteger(activitiesRequest.activityID());
+        BigInteger activityID = new BigInteger(activitiesRequest.activityID());
         updateIfDifferent(activities.getActivityID(), activityID, activities::setActivityID);
         updateIfDifferent(activities.getActivityDate(), activitiesRequest.activityDate(), activities::setActivityDate);
         updateIfDifferent(activities.getActivityType(), activitiesRequest.activityType(), activities::setActivityType);
@@ -25,7 +26,6 @@ public class ActivitiesMapper {
 
         return activities;
     }
-
 
     private <T> void updateIfDifferent(T currentValue, T newValue, Consumer<T> setter) {
         if (!Objects.equals(currentValue, newValue)) {

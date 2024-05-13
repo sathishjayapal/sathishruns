@@ -1,22 +1,6 @@
 package me.sathish.web.controllers;
 
-import static me.sathish.utils.AppConstants.PROFILE_TEST;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import me.sathish.entities.Activities;
 import me.sathish.exception.activitiesNotFoundException;
 import me.sathish.model.query.FindactivitiessQuery;
@@ -36,7 +20,23 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = activitiesController.class)
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static me.sathish.utils.AppConstants.PROFILE_TEST;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(controllers = ActivitiesController.class)
 @ActiveProfiles(PROFILE_TEST)
 class ActivitiesControllerTest {
 
@@ -55,11 +55,38 @@ class ActivitiesControllerTest {
     void setUp() {
         this.activitiesList = new ArrayList<>();
         activitiesList.add(new Activities(
-                1L, new BigInteger("11146355759"), "2021-06-01", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest1"));
+                1L,
+                new BigInteger("11146355759"),
+                "2021-06-01",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest1"));
         activitiesList.add(new Activities(
-                2L, new BigInteger("11146373918"), "2021-06-02", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest2"));
+                2L,
+                new BigInteger("11146373918"),
+                "2021-06-02",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest2"));
         activitiesList.add(new Activities(
-                3L, new BigInteger("11146373919"), "2021-06-03", "Running", "Running", "1:00:00", "10", "100", "200", "junitTest3"));
+                3L,
+                new BigInteger("11146373919"),
+                "2021-06-03",
+                "Running",
+                "Running",
+                "1:00:00",
+                "10",
+                "100",
+                "200",
+                "junitTest3"));
     }
 
     @Test
@@ -138,9 +165,8 @@ class ActivitiesControllerTest {
 
     @Test
     void shouldReturn400WhenCreateNewactivitiesWithoutText() throws Exception {
-        ActivitiesRequest activitiesRequest =
-                new ActivitiesRequest(null, "2021-06-01", "Running", "Running",
-                        "0.00", "0.00", "120", "100", "junittest50");
+        ActivitiesRequest activitiesRequest = new ActivitiesRequest(
+                null, "2021-06-01", "Running", "Running", "0.00", "0.00", "120", "100", "junittest50");
         this.mockMvc
                 .perform(post("/api/activities")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -151,7 +177,7 @@ class ActivitiesControllerTest {
                 .andExpect(jsonPath("$.title", is("Constraint Violation")))
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.detail", is("Invalid request content.")))
-                .andExpect(jsonPath("$.instance", is("/api/Activities")))
+                .andExpect(jsonPath("$.instance", is("/api/activities")))
                 .andExpect(jsonPath("$.violations", hasSize(1)))
                 .andExpect(jsonPath("$.violations[0].field", is("activityID")))
                 .andExpect(jsonPath("$.violations[0].message", is("ActivityID cannot be empty")))
@@ -188,10 +214,8 @@ class ActivitiesControllerTest {
     @Test
     void shouldReturn404WhenUpdatingNonExistingactivities() throws Exception {
         Long activitiesId = 1L;
-        ActivitiesRequest activitiesRequest =
-                new ActivitiesRequest("11146355759", "2021-06-01",
-                        "Running", "Running", "00:00:00",
-                        "0.0", "0.0", "0", "junitTest4");
+        ActivitiesRequest activitiesRequest = new ActivitiesRequest(
+                "11146355759", "2021-06-01", "Running", "Running", "00:00:00", "0.0", "0.0", "0", "junitTest4");
         given(activitiesService.updateactivities(eq(activitiesId), any(ActivitiesRequest.class)))
                 .willThrow(new activitiesNotFoundException(activitiesId));
 

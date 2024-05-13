@@ -1,14 +1,14 @@
 package me.sathish.entities;
 
 import jakarta.persistence.*;
-
-import java.math.BigInteger;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+
+import java.math.BigInteger;
+import java.util.Objects;
 
 @Entity
 @Table(name = "activities")

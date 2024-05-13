@@ -1,14 +1,5 @@
 package me.sathish.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.times;
-import static org.mockito.BDDMockito.verify;
-import static org.mockito.BDDMockito.willDoNothing;
-
-import java.math.BigInteger;
-import java.util.Optional;
 import me.sathish.entities.Activities;
 import me.sathish.mapper.ActivitiesMapper;
 import me.sathish.model.response.ActivitiesResponse;
@@ -18,6 +9,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.math.BigInteger;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ActivitiesServiceTest {
@@ -58,7 +56,7 @@ class ActivitiesServiceTest {
     private Activities getactivities() {
         Activities activities = new Activities();
         activities.setId(1L);
-        activities.setActivityID( new BigInteger("11146355759"));
+        activities.setActivityID(new BigInteger("11146355759"));
         activities.setActivityDate("2021-06-01");
         activities.setActivityType("Running");
         activities.setActivityDescription("Running");

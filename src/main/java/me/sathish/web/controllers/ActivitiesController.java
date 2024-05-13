@@ -1,7 +1,6 @@
 package me.sathish.web.controllers;
 
 import jakarta.validation.Valid;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.sathish.exception.activitiesNotFoundException;
@@ -13,26 +12,20 @@ import me.sathish.services.ActivitiesService;
 import me.sathish.utils.AppConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/activities")
 @Slf4j
 @RequiredArgsConstructor
-public class activitiesController {
+public class ActivitiesController {
 
     private final ActivitiesService activitiesService;
 
-    @GetMapping
+    @GetMapping // /api/activities?pageNo=0&pageSize=10&sortBy=id&sortDir=asc
     public PagedResult<ActivitiesResponse> getAllactivitiess(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false)
                     int pageNo,
